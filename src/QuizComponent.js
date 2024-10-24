@@ -52,30 +52,30 @@ const QuizComponent = () => {
   const handleSubmit = () => {
     // fetch(`http://localhost:5001/api/quiz/submit/${week}`, {
       fetch(`https://conservation-geography-nptel.onrender.com/api/quiz/submit/${week}`, {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify({
-        userAnswers: Object.entries(userAnswers).map(([index, selectedAnswer]) => ({
-          questionIndex: parseInt(index),
-          selectedAnswer,
-        })),
-      }),
-    })
-      .then((response) => {
-        if (!response.ok) {
-          throw new Error('Submission failed');
-        }
-        return response.json();
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          userAnswers: Object.entries(userAnswers).map(([index, selectedAnswer]) => ({
+            questionIndex: parseInt(index),
+            selectedAnswer,
+          })),
+        }),
       })
-      .then((data) => {
-        setResult(data);
-        setSubmitted(true);
-      })
-      .catch((error) => {
-        console.error('Error submitting quiz:', error);
-      });
+        .then((response) => {
+          if (!response.ok) {
+            throw new Error('Submission failed');
+          }
+          return response.json();
+        })
+        .then((data) => {
+          setResult(data);
+          setSubmitted(true);
+        })
+        .catch((error) => {
+          console.error('Error submitting quiz:', error);
+        });
   };
 
   // Handle scroll visibility for scroll buttons
