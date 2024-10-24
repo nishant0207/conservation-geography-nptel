@@ -18,6 +18,7 @@ const QuizComponent = () => {
       try {
         setLoading(true);
         // const response = await fetch(`http://localhost:5001/api/quiz/questions/${week}`);
+        // just to check if code is being pushed to git repo or not
         const response = await fetch(`https://conservation-geography-nptel.onrender.com/api/quiz/questions/${week}`);
 
         if (!response.ok) {
