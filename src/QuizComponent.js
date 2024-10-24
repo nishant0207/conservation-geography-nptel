@@ -11,16 +11,16 @@ const QuizComponent = () => {
   const [submitted, setSubmitted] = useState(false);
   const [result, setResult] = useState(null);
   const [showScrollButtons, setShowScrollButtons] = useState(false);
+  const [score, setScore] = useState(0); // State to track the total score
   const navigate = useNavigate();
 
+  // Fetch quiz questions based on the week
   useEffect(() => {
     const fetchQuestions = async () => {
       try {
         setLoading(true);
         // const response = await fetch(`http://localhost:5001/api/quiz/questions/${week}`);
-        // just to check if code is being pushed to git repo or not
         const response = await fetch(`https://conservation-geography-nptel.onrender.com/api/quiz/questions/${week}`);
-
         if (!response.ok) {
           throw new Error('Failed to fetch questions');
         }
@@ -42,6 +42,7 @@ const QuizComponent = () => {
     fetchQuestions();
   }, [week]);
 
+  // Handle the user's answer selection
   const handleSelectAnswer = (questionIndex, selectedAnswer) => {
     setUserAnswers((prev) => ({
       ...prev,
@@ -49,33 +50,43 @@ const QuizComponent = () => {
     }));
   };
 
+  // Handle quiz submission
   const handleSubmit = () => {
     // fetch(`http://localhost:5001/api/quiz/submit/${week}`, {
-      fetch(`https://conservation-geography-nptel.onrender.com/api/quiz/submit/${week}`, {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({
-          userAnswers: Object.entries(userAnswers).map(([index, selectedAnswer]) => ({
-            questionIndex: parseInt(index),
-            selectedAnswer,
-          })),
-        }),
+    fetch(`https://conservation-geography-nptel.onrender.com/api/quiz/submit/${week}`, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({
+        userAnswers: Object.entries(userAnswers).map(([index, selectedAnswer]) => ({
+          questionIndex: parseInt(index),
+          selectedAnswer,
+        })),
+      }),
+    })
+      .then((response) => {
+        if (!response.ok) {
+          throw new Error('Submission failed');
+        }
+        return response.json();
       })
-        .then((response) => {
-          if (!response.ok) {
-            throw new Error('Submission failed');
+      .then((data) => {
+        // Calculate score on submission
+        let calculatedScore = 0;
+        data.result.forEach((res) => {
+          if (res.correct) {
+            calculatedScore++;
           }
-          return response.json();
-        })
-        .then((data) => {
-          setResult(data);
-          setSubmitted(true);
-        })
-        .catch((error) => {
-          console.error('Error submitting quiz:', error);
         });
+
+        setResult(data);
+        setScore(calculatedScore); // Update the score
+        setSubmitted(true); // Mark the quiz as submitted
+      })
+      .catch((error) => {
+        console.error('Error submitting quiz:', error);
+      });
   };
 
   // Handle scroll visibility for scroll buttons
@@ -123,7 +134,7 @@ const QuizComponent = () => {
       <div className="quiz-tiles">
         {questions.map((question, index) => {
           const correctAnswerIndex = result?.result?.[index]?.correctAnswer;
-          const userSelectedAnswer = result?.result?.[index]?.selectedAnswer;
+          const userSelectedAnswer = userAnswers[index];
 
           return (
             <div key={index} className="quiz-tile">
@@ -138,10 +149,14 @@ const QuizComponent = () => {
                     let optionClass = 'neutral';
 
                     if (submitted) {
+                      // Highlight the correct answer in green
                       if (optionIndex === correctAnswerIndex) {
-                        optionClass = 'correct-answer'; // Always highlight correct answer
-                      } else if (optionIndex === userSelectedAnswer && optionIndex !== correctAnswerIndex) {
-                        optionClass = 'incorrect-answer'; // Highlight user's wrong choice
+                        optionClass = 'correct-answer';
+                      }
+
+                      // If user selected the wrong answer, highlight it in red
+                      if (userSelectedAnswer === optionIndex && userSelectedAnswer !== correctAnswerIndex) {
+                        optionClass = 'incorrect-answer';
                       }
                     }
 
@@ -165,15 +180,17 @@ const QuizComponent = () => {
         })}
       </div>
 
+      {/* Submit button */}
       {!submitted && questions.length > 0 && (
         <button className="submit-button" onClick={handleSubmit}>
           Submit Quiz
         </button>
       )}
 
+      {/* Display the total score */}
       {submitted && result && (
         <div className="results-section">
-          <h2>Your Total Score: {result.score}/{result.totalQuestions}</h2>
+          <h2>Your Total Score: {score}/{result.totalQuestions}</h2>
         </div>
       )}
 
