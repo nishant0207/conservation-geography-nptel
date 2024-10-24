@@ -17,7 +17,8 @@ const QuizComponent = () => {
     const fetchQuestions = async () => {
       try {
         setLoading(true);
-        const response = await fetch(`http://localhost:5001/api/quiz/questions/${week}`);
+        // const response = await fetch(`http://localhost:5001/api/quiz/questions/${week}`);
+        const response = await fetch(`https://conservation-geography-nptel.onrender.com/api/quiz/questions/${week}`);
 
         if (!response.ok) {
           throw new Error('Failed to fetch questions');
@@ -48,7 +49,8 @@ const QuizComponent = () => {
   };
 
   const handleSubmit = () => {
-    fetch(`http://localhost:5001/api/quiz/submit/${week}`, {
+    // fetch(`http://localhost:5001/api/quiz/submit/${week}`, {
+      fetch(`https://conservation-geography-nptel.onrender.com/api/quiz/submit/${week}`, {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
