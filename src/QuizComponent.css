@@ -1,0 +1,193 @@
+/* Styling for the quiz container */
+.quiz-container {
+  max-width: 800px;
+  margin: 0 auto;
+  position: relative;
+  margin-top: 80px; /* Space for the cross button */
+}
+
+/* Flexbox for options container */
+.options-container {
+  display: flex;
+  flex-direction: column;
+  margin-top: 10px;
+}
+
+/* Correct answer style (green) */
+.correct-answer {
+  background-color: #d4edda;
+  border: 1px solid #28a745;
+  color: #155724;
+}
+
+/* Incorrect answer style (red) */
+.incorrect-answer {
+  background-color: #f8d7da;
+  border: 1px solid #dc3545;
+  color: #721c24;
+}
+
+/* Neutral style for unselected options */
+.neutral {
+  background-color: #f8f9fa;
+  border: 1px solid #ced4da;
+  color: #495057;
+}
+
+/* Styling for question container */
+.quiz-tile {
+  margin-bottom: 20px;
+  padding: 10px;
+  border-radius: 5px;
+  border: 1px solid #ccc;
+}
+
+/* Styling for radio button label */
+.option-label {
+  display: block;
+  margin: 10px 0;
+  padding: 10px;
+  border-radius: 5px;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+/* Disable pointer events for submitted answers */
+.option-label input:disabled {
+  cursor: not-allowed;
+}
+
+/* Submit button styling */
+/* Center align the submit button */
+.submit-button {
+  display: block;
+  margin: 20px auto; /* This centers the button horizontally */
+  padding: 10px 20px;
+  background-color: #4CAF50;
+  color: white;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  font-size: 1.2rem;
+  transition: background-color 0.3s ease;
+}
+
+.submit-button:hover {
+  background-color: #45a049;
+}
+
+/* Cross button styling (Top Right Corner) */
+.cross-button {
+  position: fixed;
+  top: 10px;
+  right: 20px;
+  background-color: #f8f9fa;  /* Solid circular background */
+  color: #000;
+  width: 50px;  /* Set fixed width */
+  height: 50px;  /* Set fixed height */
+  display: flex;  /* To center the cross inside the button */
+  justify-content: center;
+  align-items: center;
+  border: 1px solid #ccc; /* Light border */
+  border-radius: 50%; /* Ensure perfect circle */
+  font-size: 2rem;
+  cursor: pointer;
+  z-index: 1000;
+  transition: transform 0.3s ease, opacity 0.3s ease, background-color 0.3s ease, color 0.3s ease;
+}
+
+/* Cross button hides when scrolling down */
+.cross-button.hide {
+  transform: translateY(-100%);
+  opacity: 0;
+}
+
+/* Cross button shows when scrolling up */
+.cross-button.show {
+  transform: translateY(0);
+  opacity: 1;
+}
+
+.cross-button:hover {
+  background-color: #dc3545; /* Change background color on hover */
+  color: #fff; /* Change cross color on hover */
+}
+
+/* Results section styling */
+.results-section {
+  background-color: #f0f0f0;
+  border: 1px solid #ddd;
+  padding: 15px;
+  border-radius: 5px;
+  margin-top: 20px;
+  text-align: center;
+  font-size: 1.2rem;
+}
+
+/* Quiz Title Styling */
+.quiz-title {
+  text-align: center;
+  margin-bottom: 20px;
+  margin-top: 80px; /* Adjust for better spacing */
+}
+
+/* Media queries for responsiveness */
+@media (max-width: 768px) {
+  .quiz-container {
+    padding: 10px;
+  }
+
+  .quiz-tile {
+    padding: 15px;
+  }
+
+  .option-label {
+    font-size: 1rem;
+    padding: 8px;
+  }
+
+  .submit-button, .cross-button {
+    font-size: 1rem;
+  }
+
+  .cross-button {
+    font-size: 1.5rem;
+    top: 10px;
+    right: 10px;
+  }
+}
+
+
+/* Scroll to Top Button */
+.scroll-to-top, .scroll-to-bottom {
+  position: fixed;
+  right: 20px;
+  background-color: #f8f9fa;
+  color: #000;
+  width: 50px;
+  height: 50px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  border: 1px solid #ccc;
+  border-radius: 50%;
+  font-size: 1.5rem;
+  cursor: pointer;
+  z-index: 1000;
+  transition: background-color 0.3s ease, color 0.3s ease;
+}
+
+.scroll-to-top {
+  bottom: 80px; /* Place the scroll-to-top button near the bottom */
+}
+
+.scroll-to-bottom {
+  bottom: 20px; /* Place the scroll-to-bottom button near the scroll-to-top button */
+}
+
+.scroll-to-top:hover, .scroll-to-bottom:hover {
+  background-color: #4CAF50;
+  color: white;
+}
