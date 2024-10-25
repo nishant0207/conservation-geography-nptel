@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
+import { jsPDF } from 'jspdf';  // Import jsPDF
 import './QuizComponent.css';
 
 const QuizComponent = () => {
@@ -71,19 +72,91 @@ const QuizComponent = () => {
       })
       .then((data) => {
         let calculatedScore = 0;
+
+        // Calculate score based on the result
         data.result.forEach((res) => {
           if (res.correct) {
-            calculatedScore++;
+            calculatedScore++; // Only increment for correct answers
           }
         });
 
         setResult(data);
-        setScore(calculatedScore);
-        setSubmitted(true);
+        setScore(calculatedScore); // Correct score now reflects the number of correct answers
+        setSubmitted(true); // Mark the quiz as submitted
       })
       .catch((error) => {
         console.error('Error submitting quiz:', error);
       });
+  };
+
+  // Function to generate PDF with questions and correct answers marked with an arrow, bold, and larger font size
+  // Function to generate PDF with questions and correct answers marked with an arrow, bold, and larger font size
+const generatePDF = () => {
+  const doc = new jsPDF();
+  doc.setFontSize(16);
+  doc.setFont("helvetica", "bold");
+  doc.text(`Week ${week} Quiz Questions`, 10, 10);
+
+  let yPos = 30;
+
+  questions.forEach((question, index) => {
+    // Check for new page if needed
+    if (yPos > 270) {
+      doc.addPage();
+      yPos = 20;
+    }
+
+    // Add question text
+    doc.setFontSize(12);
+    doc.setFont("helvetica", "normal");
+    const questionText = `${index + 1}. ${question.questionText}`;
+    const splitQuestionText = doc.splitTextToSize(questionText, 180);
+    doc.text(splitQuestionText, 10, yPos);
+    yPos += splitQuestionText.length * 7 + 5;
+
+    // Add options and highlight correct answer
+    question.options.forEach((option, optionIndex) => {
+      if (yPos > 270) {
+        doc.addPage();
+        yPos = 20;
+      }
+
+      if (result && result.result && result.result[index]?.correctAnswer !== undefined) {
+        const correctAnswerIndex = result.result[index].correctAnswer;
+
+        if (optionIndex === correctAnswerIndex) {
+          // Set font style and color for the correct answer
+          doc.setFont("helvetica", "bold");
+          doc.setFontSize(12);
+          doc.setTextColor(0, 0, 255);  // Highlight correct answer in blue
+          const correctText = `${String.fromCharCode(97 + optionIndex)}) ${option}`;
+          doc.text(correctText, 15, yPos);
+        } else {
+          // Reset font style and color for other answers
+          doc.setFont("helvetica", "normal");
+          doc.setFontSize(12);
+          doc.setTextColor(0, 0, 0);
+          const optionText = `${String.fromCharCode(97 + optionIndex)}) ${option}`;
+          doc.text(optionText, 15, yPos);
+        }
+      }
+      yPos += 10; // Space between options
+    });
+
+    yPos += 10; // Extra space between questions
+  });
+
+  doc.save(`Week_${week}_Quiz_Questions.pdf`);
+};
+
+  // Function to scroll to the top of the page
+  const scrollToTop = () => {
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  };
+
+  // Function to scroll to the bottom of the page
+  const scrollToBottom = () => {
+    window.scrollTo({ top: document.documentElement.scrollHeight, behavior: 'smooth' });
   };
 
   // Handle scroll visibility for scroll buttons
@@ -99,14 +172,6 @@ const QuizComponent = () => {
     };
   }, []);
 
-  const scrollToTop = () => {
-    window.scrollTo({ top: 0, behavior: 'smooth' });
-  };
-
-  const scrollToBottom = () => {
-    window.scrollTo({ top: document.documentElement.scrollHeight, behavior: 'smooth' });
-  };
-
   if (loading) {
     return <div>Loading questions...</div>;
   }
@@ -121,6 +186,7 @@ const QuizComponent = () => {
 
   return (
     <div className="quiz-container">
+      {/* Cross button */}
       <button className="cross-button" onClick={() => navigate('/')}>
         &times;
       </button>
@@ -173,18 +239,28 @@ const QuizComponent = () => {
         })}
       </div>
 
+      {/* Download PDF Button */}
+      {week !== 'final' && (
+        <button className="submit-button" onClick={generatePDF}>
+          Download Week {week} Questions as PDF
+        </button>
+      )}
+
+      {/* Submit button */}
       {!submitted && questions.length > 0 && (
         <button className="submit-button" onClick={handleSubmit}>
           Submit Quiz
         </button>
       )}
 
+      {/* Display the total score */}
       {submitted && result && (
         <div className="results-section">
           <h2>Your Total Score: {score}/{result.totalQuestions}</h2>
         </div>
       )}
 
+      {/* Scroll to Top and Scroll to Bottom Buttons */}
       {showScrollButtons && (
         <>
           <button className="scroll-to-top" onClick={scrollToTop}>

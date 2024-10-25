@@ -51,7 +51,7 @@ router.post('/submit/:week', (req, res) => {
   const { userAnswers } = req.body;
 
   let questions;
-  
+
   // Handle final quiz (all weeks combined)
   if (week === 'final') {
     questions = Object.keys(quizQuestions).reduce((acc, weekKey) => acc.concat(quizQuestions[weekKey]), []);
@@ -68,20 +68,33 @@ router.post('/submit/:week', (req, res) => {
 
   questions.forEach((question, index) => {
     const selectedAnswer = userAnswers[index]?.selectedAnswer;
-    const isCorrect = selectedAnswer === question.correctAnswer;
-    
-    if (isCorrect) {
-      score++;
+
+    // Check if the answer is undefined (unanswered question)
+    if (selectedAnswer === undefined || selectedAnswer === null) {
+      result.push({
+        questionText: question.questionText,
+        correctAnswer: question.correctAnswer,
+        selectedAnswer: null, // mark as unanswered
+        correct: false, // unanswered questions are not counted as correct or incorrect
+      });
+    } else {
+      // Compare selectedAnswer with correctAnswer
+      const isCorrect = selectedAnswer === question.correctAnswer;
+      
+      if (isCorrect) {
+        score++; // Increment the score only if the answer is correct
+      }
+
+      result.push({
+        questionText: question.questionText,
+        correctAnswer: question.correctAnswer,
+        selectedAnswer: selectedAnswer,
+        correct: isCorrect,
+      });
     }
-    
-    result.push({
-      questionText: question.questionText,
-      correctAnswer: question.correctAnswer,
-      selectedAnswer: selectedAnswer !== undefined ? selectedAnswer : null,
-      correct: isCorrect,
-    });
   });
 
+  // Return the total score and detailed result
   res.json({ score, totalQuestions: questions.length, result });
 });
 
