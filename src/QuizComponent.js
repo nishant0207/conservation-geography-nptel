@@ -19,7 +19,6 @@ const QuizComponent = () => {
     const fetchQuestions = async () => {
       try {
         setLoading(true);
-        // const response = await fetch(`http://localhost:5001/api/quiz/questions/${week}`);
         const response = await fetch(`https://conservation-geography-nptel.onrender.com/api/quiz/questions/${week}`);
         if (!response.ok) {
           throw new Error('Failed to fetch questions');
@@ -52,7 +51,6 @@ const QuizComponent = () => {
 
   // Handle quiz submission
   const handleSubmit = () => {
-    // fetch(`http://localhost:5001/api/quiz/submit/${week}`, {
     fetch(`https://conservation-geography-nptel.onrender.com/api/quiz/submit/${week}`, {
       method: 'POST',
       headers: {
@@ -72,7 +70,6 @@ const QuizComponent = () => {
         return response.json();
       })
       .then((data) => {
-        // Calculate score on submission
         let calculatedScore = 0;
         data.result.forEach((res) => {
           if (res.correct) {
@@ -81,8 +78,8 @@ const QuizComponent = () => {
         });
 
         setResult(data);
-        setScore(calculatedScore); // Update the score
-        setSubmitted(true); // Mark the quiz as submitted
+        setScore(calculatedScore);
+        setSubmitted(true);
       })
       .catch((error) => {
         console.error('Error submitting quiz:', error);
@@ -93,7 +90,7 @@ const QuizComponent = () => {
   useEffect(() => {
     const handleScroll = () => {
       const currentScrollY = window.pageYOffset;
-      setShowScrollButtons(currentScrollY > 300); // Show buttons when scrolled more than 300px
+      setShowScrollButtons(currentScrollY > 300);
     };
 
     window.addEventListener('scroll', handleScroll);
@@ -124,7 +121,6 @@ const QuizComponent = () => {
 
   return (
     <div className="quiz-container">
-      {/* Cross button */}
       <button className="cross-button" onClick={() => navigate('/')}>
         &times;
       </button>
@@ -149,14 +145,11 @@ const QuizComponent = () => {
                     let optionClass = 'neutral';
 
                     if (submitted) {
-                      // Highlight the correct answer in green
                       if (optionIndex === correctAnswerIndex) {
-                        optionClass = 'correct-answer';
+                        optionClass = 'correct-answer'; // Highlight correct answer in green
                       }
-
-                      // If user selected the wrong answer, highlight it in red
                       if (userSelectedAnswer === optionIndex && userSelectedAnswer !== correctAnswerIndex) {
-                        optionClass = 'incorrect-answer';
+                        optionClass = 'incorrect-answer'; // Highlight selected wrong answer in red
                       }
                     }
 
@@ -180,21 +173,18 @@ const QuizComponent = () => {
         })}
       </div>
 
-      {/* Submit button */}
       {!submitted && questions.length > 0 && (
         <button className="submit-button" onClick={handleSubmit}>
           Submit Quiz
         </button>
       )}
 
-      {/* Display the total score */}
       {submitted && result && (
         <div className="results-section">
           <h2>Your Total Score: {score}/{result.totalQuestions}</h2>
         </div>
       )}
 
-      {/* Scroll to Top and Scroll to Bottom Buttons */}
       {showScrollButtons && (
         <>
           <button className="scroll-to-top" onClick={scrollToTop}>
