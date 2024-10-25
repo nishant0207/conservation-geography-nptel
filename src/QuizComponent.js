@@ -89,65 +89,97 @@ const QuizComponent = () => {
       });
   };
 
-  // Function to generate PDF with questions and correct answers marked with an arrow, bold, and larger font size
-  // Function to generate PDF with questions and correct answers marked with an arrow, bold, and larger font size
-const generatePDF = () => {
-  const doc = new jsPDF();
-  doc.setFontSize(16);
-  doc.setFont("helvetica", "bold");
-  doc.text(`Week ${week} Quiz Questions`, 10, 10);
+  // Fetch correct answers before generating the PDF
+  const fetchCorrectAnswersForPDF = async () => {
+    if (!result && !submitted) {
+      try {
+        const response = await fetch(`https://conservation-geography-nptel.onrender.com/api/quiz/submit/${week}`, {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify({
+            userAnswers: Object.entries(userAnswers).map(([index, selectedAnswer]) => ({
+              questionIndex: parseInt(index),
+              selectedAnswer,
+            })),
+          }),
+        });
 
-  let yPos = 30;
+        if (!response.ok) {
+          throw new Error('Failed to fetch correct answers');
+        }
 
-  questions.forEach((question, index) => {
-    // Check for new page if needed
-    if (yPos > 270) {
-      doc.addPage();
-      yPos = 20;
+        const data = await response.json();
+        setResult(data); // Store the result for future use
+        return data;
+      } catch (error) {
+        console.error('Error fetching correct answers:', error);
+      }
+    }
+    return result;
+  };
+
+  // Function to generate PDF with questions and correct answers marked with an arrow, bold, and larger font size
+  const generatePDF = async () => {
+    const currentResult = await fetchCorrectAnswersForPDF(); // Fetch correct answers if not already available
+
+    if (!currentResult) {
+      console.error('No result available to generate PDF');
+      return;
     }
 
-    // Add question text
-    doc.setFontSize(12);
-    doc.setFont("helvetica", "normal");
-    const questionText = `${index + 1}. ${question.questionText}`;
-    const splitQuestionText = doc.splitTextToSize(questionText, 180);
-    doc.text(splitQuestionText, 10, yPos);
-    yPos += splitQuestionText.length * 7 + 5;
+    const doc = new jsPDF();
+    doc.setFontSize(16);
+    doc.setFont("helvetica", "bold");
+    doc.text(`Week ${week} Quiz Questions`, 10, 10);
 
-    // Add options and highlight correct answer
-    question.options.forEach((option, optionIndex) => {
-      if (yPos > 270) {
-        doc.addPage();
-        yPos = 20;
-      }
+    let yPos = 30; // Initial Y position for the content
 
-      if (result && result.result && result.result[index]?.correctAnswer !== undefined) {
-        const correctAnswerIndex = result.result[index].correctAnswer;
+    questions.forEach((question, index) => {
+      // Add question text
+      doc.setFontSize(12);
+      doc.setFont("helvetica", "normal");
+      const questionText = `${index + 1}. ${question.questionText}`;
+      const splitQuestionText = doc.splitTextToSize(questionText, 180); // Split text to fit within page width
+      doc.text(splitQuestionText, 10, yPos);
+      yPos += splitQuestionText.length * 7 + 5; // Adjust yPos based on the height of the question text
 
+      // Add options and highlight the correct answer
+      question.options.forEach((option, optionIndex) => {
+        if (yPos > 270) { 
+          // Add new page if the content exceeds the page limit
+          doc.addPage();
+          yPos = 20;
+        }
+
+        const correctAnswerIndex = currentResult?.result?.[index]?.correctAnswer; // Fetch correct answer index
+
+        // Format correct answer with different styling
         if (optionIndex === correctAnswerIndex) {
-          // Set font style and color for the correct answer
           doc.setFont("helvetica", "bold");
           doc.setFontSize(12);
-          doc.setTextColor(0, 0, 255);  // Highlight correct answer in blue
-          const correctText = `${String.fromCharCode(97 + optionIndex)}) ${option}`;
-          doc.text(correctText, 15, yPos);
+          const correctText = `${String.fromCharCode(97 + optionIndex)}) ${option}  <--`;
+          const splitCorrectText = doc.splitTextToSize(correctText, 180); // Ensure correct answer fits
+          doc.text(splitCorrectText, 15, yPos);
         } else {
-          // Reset font style and color for other answers
+          // Normal formatting for other options
           doc.setFont("helvetica", "normal");
           doc.setFontSize(12);
-          doc.setTextColor(0, 0, 0);
+          doc.setTextColor(0, 0, 0); // Normal black color for other options
           const optionText = `${String.fromCharCode(97 + optionIndex)}) ${option}`;
-          doc.text(optionText, 15, yPos);
+          const splitOptionText = doc.splitTextToSize(optionText, 180);
+          doc.text(splitOptionText, 15, yPos);
         }
-      }
-      yPos += 10; // Space between options
+
+        yPos += 10; // Add space between options
+      });
+
+      yPos += 10; // Extra space between questions
     });
 
-    yPos += 10; // Extra space between questions
-  });
-
-  doc.save(`Week_${week}_Quiz_Questions.pdf`);
-};
+    doc.save(`Week_${week}_Quiz_Questions.pdf`);
+  };
 
   // Function to scroll to the top of the page
   const scrollToTop = () => {
