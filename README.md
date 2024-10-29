@@ -139,6 +139,6 @@ Endpoint: POST /api/quiz/submit/:week
 	•	Timed Quizzes: Introduce timers for each quiz.
 	•	Improved UI: Enhance responsiveness and animations.
 
-License
+## License
 
 This project is open source and available under the MIT License.
