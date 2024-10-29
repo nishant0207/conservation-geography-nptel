@@ -1,70 +1,163 @@
-# Getting Started with Create React App
+NPTEL Conservation Geography Quiz App
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+This project is a Quiz Application for the NPTEL Conservation Geography course. It allows users to take weekly quizzes and a final comprehensive quiz, view scores, and download questions with correct answers as a PDF. The app is built with a Node.js backend and a React frontend.
 
-## Available Scripts
+Project Structure
 
-In the project directory, you can run:
+Here’s an overview of the project’s structure:
 
-### `npm start`
+quiz-app
+├── node_modules
+├── public
+├── quiz-app-backend
+│   ├── node_modules
+│   ├── routes
+│   │   ├── quizQuestions.js         # Contains quiz questions data for each week
+│   │   └── quizRoutes.js            # Defines backend API routes for questions and submission
+│   ├── package.json                 # Backend dependencies and scripts
+│   ├── package-lock.json
+│   └── server.js                    # Express server configuration
+├── src
+│   ├── App.css                      # Main styling for the app
+│   ├── App.js                       # Main React app component with routing configuration
+│   ├── App.test.js                  # Test file for the app component
+│   ├── QuizComponent.js             # Quiz component displaying questions and options
+│   ├── QuizComponent.css            # Styles for the Quiz component
+│   ├── QuizHome.js                  # Home component with links to weekly quizzes
+│   ├── QuizHome.css                 # Styles for the home component
+│   ├── index.css                    # Base styles for the app
+│   ├── index.js                     # Entry point for React application
+│   ├── reportWebVitals.js           # Utility for measuring app performance
+│   ├── setupTests.js                # Configuration for testing setup
+│   ├── logo.svg                     # Application logo
+├── .gitignore                       # Files to ignore in git
+├── package.json                     # Project dependencies and scripts
+├── package-lock.json
+└── README.md                        # Project documentation
 
-Runs the app in the development mode.\
-Open [http://localhost:3000](http://localhost:3000) to view it in your browser.
+Features
 
-The page will reload when you make changes.\
-You may also see any lint errors in the console.
+	•	Weekly Quiz: Allows users to select and attempt quizzes for individual weeks.
+	•	Final Quiz: Combines questions from all weeks into a single final quiz.
+	•	Answer Validation: Checks user answers and calculates scores.
+	•	PDF Generation: Allows users to download questions and correct answers as a PDF.
+	•	Smooth Navigation: Provides navigation between weekly quizzes and home.
+	•	Scroll Navigation: Scroll-to-top and scroll-to-bottom buttons for ease of access on long pages.
 
-### `npm test`
+Installation
 
-Launches the test runner in the interactive watch mode.\
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
+	1.	Clone the Repository:
 
-### `npm run build`
+git clone https://github.com/yourusername/quiz-app.git
+cd quiz-app
 
-Builds the app for production to the `build` folder.\
-It correctly bundles React in production mode and optimizes the build for the best performance.
 
-The build is minified and the filenames include the hashes.\
-Your app is ready to be deployed!
+	2.	Backend Setup:
+	•	Navigate to the quiz-app-backend folder.
 
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
+cd quiz-app-backend
 
-### `npm run eject`
+	•	Install dependencies:
 
-**Note: this is a one-way operation. Once you `eject`, you can't go back!**
+npm install
 
-If you aren't satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
+	•	Start the backend server:
 
-Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you're on your own.
+npm start
 
-You don't have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn't feel obligated to use this feature. However we understand that this tool wouldn't be useful if you couldn't customize it when you are ready for it.
+The server will run on http://localhost:5001 by default.
 
-## Learn More
+	3.	Frontend Setup:
+	•	Navigate to the root quiz-app folder.
 
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
+cd ..
 
-To learn React, check out the [React documentation](https://reactjs.org/).
+	•	Install dependencies:
 
-### Code Splitting
+npm install
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/code-splitting](https://facebook.github.io/create-react-app/docs/code-splitting)
+	•	Start the frontend:
 
-### Analyzing the Bundle Size
+npm start
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size](https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size)
+The app will run on http://localhost:3000 by default.
 
-### Making a Progressive Web App
+Usage
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app](https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app)
+	1.	Navigate to the Home Page:
+	•	Access http://localhost:3000 in your browser.
+	•	You will see a list of weeks available to quiz on and a final quiz option.
+	2.	Take a Quiz:
+	•	Click on any week or the final quiz to start answering questions.
+	•	Each question has multiple-choice options. Select one option per question.
+	3.	Submit Quiz:
+	•	Once you’ve answered all questions, click Submit Quiz.
+	•	Your score and a detailed breakdown of correct/incorrect answers will be displayed.
+	4.	Download PDF:
+	•	If you’d like a PDF version of the questions with correct answers marked, click the Download Week X Questions as PDF button (available for weekly quizzes).
 
-### Advanced Configuration
+API Endpoints
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/advanced-configuration](https://facebook.github.io/create-react-app/docs/advanced-configuration)
+1. Get Questions for a Week
 
-### Deployment
+Endpoint: GET /api/quiz/questions/:week
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/deployment](https://facebook.github.io/create-react-app/docs/deployment)
+Parameters:
 
-### `npm run build` fails to minify
+	•	week: Number of the week (e.g., 1, 2, …) or final for the combined quiz.
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify](https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify)
+Response:
+
+	•	JSON array of questions with questionText and options.
+
+2. Submit Answers
+
+Endpoint: POST /api/quiz/submit/:week
+
+Parameters:
+
+	•	week: Number of the week or final.
+	•	userAnswers: Array of objects with questionIndex and selectedAnswer.
+
+Response:
+
+	•	JSON object with score, totalQuestions, and result (details of each question with correct and selected answers).
+
+Code Explanation
+
+Backend (Node.js with Express)
+
+	•	quizQuestions.js: Stores questions for each week.
+	•	quizRoutes.js: Defines routes for fetching questions and submitting answers.
+	•	server.js: Configures and starts the Express server, handles routing.
+
+Frontend (React)
+
+	•	QuizHome.js: Home component displaying links to weekly quizzes.
+	•	QuizComponent.js: Quiz component that fetches questions, displays them, and allows answer submission.
+	•	App.js: Configures routing between QuizHome and QuizComponent.
+	•	PDF Generation: jsPDF library is used to create PDFs with questions and correct answers marked.
+
+Dependencies
+
+Backend Dependencies
+
+	•	Express: For creating the REST API.
+	•	CORS: To handle cross-origin requests.
+
+Frontend Dependencies
+
+	•	React: For building the UI.
+	•	React Router: For navigating between quiz weeks.
+	•	jsPDF: For generating PDFs with questions and answers.
+
+Future Improvements
+
+	•	User Authentication: Allow users to sign in and save progress.
+	•	Score History: Track and display users’ scores over time.
+	•	Timed Quizzes: Introduce a timer for each quiz.
+	•	Improved UI: Add animations and improve responsiveness.
+
+License
+
+This project is open source and available under the MIT License.
