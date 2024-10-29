@@ -1,11 +1,14 @@
-NPTEL Conservation Geography Quiz App
+# NPTEL Conservation Geography Quiz App
 
-This project is a Quiz Application for the NPTEL Conservation Geography course. It allows users to take weekly quizzes and a final comprehensive quiz, view scores, and download questions with correct answers as a PDF. The app is built with a Node.js backend and a React frontend.
+This project is a **Quiz Application** for the NPTEL Conservation Geography course. It allows users to take weekly quizzes and a final comprehensive quiz, view scores, and download questions with correct answers as a PDF. The app is built with a **Node.js** backend and a **React** frontend.
 
-Project Structure
+---
 
-Here’s an overview of the project’s structure:
+## Project Structure
 
+Here's an overview of the project's structure:
+
+```plaintext
 quiz-app
 ├── node_modules
 ├── public
@@ -48,7 +51,7 @@ Installation
 
 	1.	Clone the Repository:
 
-git clone https://github.com/yourusername/quiz-app.git
+git clone https://github.com/nishant0207/quiz-app.git
 cd quiz-app
 
 
@@ -136,7 +139,7 @@ Frontend (React)
 	•	QuizHome.js: Home component displaying links to weekly quizzes.
 	•	QuizComponent.js: Quiz component that fetches questions, displays them, and allows answer submission.
 	•	App.js: Configures routing between QuizHome and QuizComponent.
-	•	PDF Generation: jsPDF library is used to create PDFs with questions and correct answers marked.
+	•	PDF Generation: jsPDF library is used to create PDFs with questions and answers marked.
 
 Dependencies
 
@@ -161,3 +164,8 @@ Future Improvements
 License
 
 This project is open source and available under the MIT License.
+
+Acknowledgments
+
+	•	This project was inspired by NPTEL’s Conservation Geography course.
+	•	Special thanks to the contributors and open-source libraries used.
