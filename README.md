@@ -1,5 +1,3 @@
-Here’s a refined README.md structure, styled similarly to the format you’ve shown in the images:
-
 # NPTEL Conservation Geography Quiz App
 
 ## Overview
@@ -47,14 +45,14 @@ quiz-app
 ├── package.json                     # Project dependencies and scripts
 └── README.md                        # Project documentation
 
----
-Technologies Used
+
+## Technologies Used
 
 	•	Backend: Node.js, Express, CORS
 	•	Frontend: React, React Router, jsPDF (for PDF generation)
 	•	Deployment: Any platform that supports Node.js and React (e.g., Heroku, Vercel)
----
-Installation
+
+## Installation
 
 Step 1: Clone the Repository
 
@@ -96,8 +94,8 @@ npm install
 npm start
 
 The app will run on http://localhost:3000 by default.
----
-Usage
+
+## Usage
 
 	1.	Navigate to the Home Page:
 	•	Access http://localhost:3000 in your browser.
@@ -110,8 +108,8 @@ Usage
 	•	Your score and a breakdown of correct/incorrect answers will appear.
 	4.	Download PDF:
 	•	Click the Download PDF button to generate a PDF of questions with correct answers highlighted.
----
-API Endpoints
+
+## API Endpoints
 
 Get Questions for a Week
 
@@ -127,14 +125,14 @@ Endpoint: POST /api/quiz/submit/:week
 	•	Parameters: week - Week number or final
 	•	Body: userAnswers - Array with questionIndex and selectedAnswer.
 	•	Response: JSON object with score, totalQuestions, and result (showing correct answers and user selections).
----
-Code Explanation
+
+## Code Explanation
 
 	•	Backend: quizQuestions.js stores quiz data, quizRoutes.js defines the endpoints, and server.js configures the server.
 	•	Frontend: QuizHome.js (home component for quiz selection), QuizComponent.js (quiz display and submission), App.js (routing configuration).
 	•	PDF Generation: Uses jsPDF to generate downloadable PDFs with questions and correct answers marked.
----
-Future Improvements
+
+## Future Improvements
 
 	•	User Authentication: Add sign-in to save user progress.
 	•	Score History: Track and display users’ scores over time.
