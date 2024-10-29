@@ -1,6 +1,6 @@
 Here’s a refined README.md structure, styled similarly to the format you’ve shown in the images:
 
-# 🦋 NPTEL Conservation Geography Quiz App
+# NPTEL Conservation Geography Quiz App
 
 ## Overview
 
