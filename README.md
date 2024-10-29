@@ -44,7 +44,7 @@ quiz-app
 │   └── ...                          # Other components and style files
 ├── package.json                     # Project dependencies and scripts
 └── README.md                        # Project documentation
-
+```
 
 ## Technologies Used
 
