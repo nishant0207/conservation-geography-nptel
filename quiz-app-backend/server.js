@@ -1,7 +1,7 @@
 const express = require('express');
 const cors = require('cors');
-import fetch from 'node-fetch';
-import quizRoutes from './routes/quizRoutes';
+const fetch = require('node-fetch'); // Import node-fetch
+const quizRoutes = require('./routes/quizRoutes'); // Correct path
 
 // Initialize the app
 const app = express();
