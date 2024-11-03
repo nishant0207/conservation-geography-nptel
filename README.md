@@ -1,70 +1,144 @@
-# Getting Started with Create React App
+# NPTEL Conservation Geography Quiz App
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+## Overview
 
-## Available Scripts
+This project is a **Quiz Application** for the NPTEL Conservation Geography course, built using **Node.js** for the backend and **React** for the frontend. It provides weekly quizzes and a final quiz, enabling users to view scores and download questions and answers in PDF format.
 
-In the project directory, you can run:
+---
 
-### `npm start`
+## Features
 
-Runs the app in the development mode.\
-Open [http://localhost:3000](http://localhost:3000) to view it in your browser.
+1. **Weekly Quizzes**
+   - Users can select and attempt quizzes for individual weeks.
 
-The page will reload when you make changes.\
-You may also see any lint errors in the console.
+2. **Final Quiz**
+   - Combines questions from all weeks into a single comprehensive quiz.
 
-### `npm test`
+3. **Answer Validation**
+   - Checks user responses and calculates scores.
 
-Launches the test runner in the interactive watch mode.\
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
+4. **PDF Generation**
+   - Allows users to download questions with correct answers in a PDF format.
 
-### `npm run build`
+5. **Smooth Navigation**
+   - Easy transitions between quizzes and home with scroll buttons for better user experience.
 
-Builds the app for production to the `build` folder.\
-It correctly bundles React in production mode and optimizes the build for the best performance.
+---
 
-The build is minified and the filenames include the hashes.\
-Your app is ready to be deployed!
+## Project Structure
 
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
+```plaintext
+quiz-app
+├── node_modules
+├── public
+├── quiz-app-backend
+│   ├── routes
+│   │   ├── quizQuestions.js         # Contains quiz questions data for each week
+│   │   └── quizRoutes.js            # Backend API routes for questions and submissions
+│   ├── server.js                    # Express server configuration
+├── src
+│   ├── App.js                       # Main React app component with routing configuration
+│   ├── QuizComponent.js             # Quiz component displaying questions and options
+│   ├── QuizHome.js                  # Home component with links to weekly quizzes
+│   ├── index.js                     # Entry point for React application
+│   └── ...                          # Other components and style files
+├── package.json                     # Project dependencies and scripts
+└── README.md                        # Project documentation
+```
 
-### `npm run eject`
+## Technologies Used
 
-**Note: this is a one-way operation. Once you `eject`, you can't go back!**
+	•	Backend: Node.js, Express, CORS
+	•	Frontend: React, React Router, jsPDF (for PDF generation)
+	•	Deployment: Any platform that supports Node.js and React (e.g., Heroku, Vercel)
 
-If you aren't satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
+## Installation
 
-Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you're on your own.
+Step 1: Clone the Repository
 
-You don't have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn't feel obligated to use this feature. However we understand that this tool wouldn't be useful if you couldn't customize it when you are ready for it.
+git clone https://github.com/yourusername/quiz-app.git
+cd quiz-app
 
-## Learn More
+Step 2: Backend Setup
 
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
+	1.	Navigate to the quiz-app-backend folder:
 
-To learn React, check out the [React documentation](https://reactjs.org/).
+cd quiz-app-backend
 
-### Code Splitting
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/code-splitting](https://facebook.github.io/create-react-app/docs/code-splitting)
+	2.	Install dependencies:
 
-### Analyzing the Bundle Size
+npm install
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size](https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size)
 
-### Making a Progressive Web App
+	3.	Start the backend server:
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app](https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app)
+npm start
 
-### Advanced Configuration
+The server will run on http://localhost:5001 by default.
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/advanced-configuration](https://facebook.github.io/create-react-app/docs/advanced-configuration)
+Step 3: Frontend Setup
 
-### Deployment
+	1.	Return to the root quiz-app folder:
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/deployment](https://facebook.github.io/create-react-app/docs/deployment)
+cd ..
 
-### `npm run build` fails to minify
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify](https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify)
+	2.	Install frontend dependencies:
+
+npm install
+
+
+	3.	Start the frontend:
+
+npm start
+
+The app will run on http://localhost:3000 by default.
+
+## Usage
+
+	1.	Navigate to the Home Page:
+	•	Access http://localhost:3000 in your browser.
+	•	You’ll see links for each week’s quiz and a final quiz option.
+	2.	Take a Quiz:
+	•	Select a week or the final quiz to start.
+	•	Answer multiple-choice questions and proceed to submit.
+	3.	Submit Quiz:
+	•	After completing all questions, click Submit Quiz.
+	•	Your score and a breakdown of correct/incorrect answers will appear.
+	4.	Download PDF:
+	•	Click the Download PDF button to generate a PDF of questions with correct answers highlighted.
+
+## API Endpoints
+
+Get Questions for a Week
+
+Endpoint: GET /api/quiz/questions/:week
+
+	•	Parameters: week - Week number (e.g., 1, 2, …) or final for the cumulative quiz.
+	•	Response: JSON array of questions with questionText and options.
+
+Submit Answers
+
+Endpoint: POST /api/quiz/submit/:week
+
+	•	Parameters: week - Week number or final
+	•	Body: userAnswers - Array with questionIndex and selectedAnswer.
+	•	Response: JSON object with score, totalQuestions, and result (showing correct answers and user selections).
+
+## Code Explanation
+
+	•	Backend: quizQuestions.js stores quiz data, quizRoutes.js defines the endpoints, and server.js configures the server.
+	•	Frontend: QuizHome.js (home component for quiz selection), QuizComponent.js (quiz display and submission), App.js (routing configuration).
+	•	PDF Generation: Uses jsPDF to generate downloadable PDFs with questions and correct answers marked.
+
+## Future Improvements
+
+	•	User Authentication: Add sign-in to save user progress.
+	•	Score History: Track and display users’ scores over time.
+	•	Timed Quizzes: Introduce timers for each quiz.
+	•	Improved UI: Enhance responsiveness and animations.
+
+## License
+
+This project is open source and available under the MIT License.
