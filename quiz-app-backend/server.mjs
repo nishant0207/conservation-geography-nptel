@@ -21,7 +21,7 @@ app.listen(PORT, () => {
 
 // Self-pinging mechanism
 const SELF_PING_INTERVAL = 14 * 60 * 1000;
-const SELF_URL = `http://localhost:${PORT}/api/quiz/ping`;
+const SELF_URL = `https://conservation-geography-nptel.onrender.com/api/quiz/ping`;
 
 setInterval(() => {
   fetch(SELF_URL)
